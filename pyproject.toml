@@ -1,64 +1,80 @@
-[tool.poetry]
+[project]
 name = "rclip"
 version = "2.1.0"
 description = "AI-Powered Command-Line Photo Search Tool"
-authors = ["Yurij Mikhalevich <yurij@mikhalevi.ch>"]
+repository = "https://github.com/sabinu/rclip"
+authors = [{name="Yurij Mikhalevich", email="yurij@mikhalevi.ch"}]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/yurijmikhalevich/rclip"
 keywords = ["image search", "computer vision", "photography"]
-classifiers = [
-  "Intended Audience :: End Users/Desktop",
-  "Intended Audience :: Science/Research",
-  "Topic :: Multimedia :: Graphics",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence",
-  "Topic :: Scientific/Engineering :: Image Processing",
-  "Topic :: Scientific/Engineering :: Image Recognition",
-  "Topic :: Utilities",
+requires-python = ">=3.10"
+dependencies = [
+    "numpy~=2.1.3",
+    "open-clip-torch>=3.1.0",
+    "pillow>=12.0.0",
+    "pillow-heif>=1.1.1",
+    "rawpy>=0.24.0",
+    "requests~=2.32",
+    "torch==2.5.1",
+    "torchvision==0.20.1",
+    "tqdm>=4.65.0",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10 <3.13"
-numpy = "~2.1.3"
-open_clip_torch = "^3.1.0"
-pillow = "^12.0.0"
-pillow-heif = "^1.1.1"
-requests = "~=2.32"
-torch = [
-  { version = "==2.5.1", source = "pypi", markers = "sys_platform != 'linux' or platform_machine == 'aarch64'" },
-  { version = "==2.5.1+cpu", source = "pytorch-cpu", markers = "sys_platform == 'linux' and platform_machine != 'aarch64'" }
+[dependency-groups]
+dev = [
+    "jinja2>=3.1.6",
+    "pytest>=9.0.2",
+    "ruff>=0.14.11",
+    "ty>=0.0.11",
 ]
-torchvision = [
-  { version = "==0.20.1", source = "pypi", markers = "sys_platform != 'linux' or platform_machine == 'aarch64'" },
-  { version = "==0.20.1+cpu", source = "pytorch-cpu", markers = "sys_platform == 'linux' and platform_machine != 'aarch64'" }
-]
-tqdm = "^4.65.0"
-rawpy = "^0.24.0"
 
-[tool.poetry.group.dev.dependencies]
-pyright = {extras = ["nodejs"], version = "^1.1.394"}
-pytest = ">=7.2.1,<8.0"
-ruff = "^0.9.7"
-homebrew-pypi-poet = "^0.10.0"
-jinja2 = "^3.1.5"
-
-[tool.poetry.scripts]
+[project.scripts]
 rclip = "rclip.main:main"
 
+# ----------------------------------------------------------
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+# https://docs.astral.sh/uv/concepts/build-backend/
+requires = ["uv_build>=0.9.6,<0.10.0"]
+build-backend = "uv_build"
 
-[[tool.poetry.source]]
-name = "pypi"
-priority = "primary"
+[tool.uv.build-backend]
+module-name = "rclip"
+module-root = ""
 
-[[tool.poetry.source]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
+# ----------------------------------------------------------
 
-[tool.ruff]
-line-length = 120
-indent-width = 2
-exclude = ["AppDir", "appimage-builder-cache", "benchmarks/datasets"]
+[tool.basedpyright]
+typeCheckingMode = "basic"
+include = ["rclip"]
+
+# ----------------------------------------------------------
+
+[tool.ty.environment]
+extra-paths = ["./rclip"]
+
+[tool.ty.rules]
+missing-argument = "ignore"
+
+# ----------------------------------------------------------
+
+[tool.ruff.lint]
+select = [
+  "E",   # pycodestyle
+  "F",   # Pyflakes
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "S",   # flake8-bandit
+  "SIM", # flake8-simplify
+  "I",   # isort
+  "PL",  # pylint
+]
+extend-select = [
+  "C90", # mccabe - complexity
+  "UP",  # pyupgrade
+  # "D",   # pydocstyle
+]
+exclude = ["*.ipynb"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
