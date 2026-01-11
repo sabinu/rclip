@@ -1,13 +1,9 @@
 {
-  "exclude": [
-    "AppDir",
-    "appimage-builder-cache",
-    "benchmarks/datasets"
-  ],
+  "exclude": ["AppDir", "appimage-builder-cache", "benchmarks/datasets"],
   "typeCheckingMode": "strict",
   "reportMissingTypeStubs": "none",
   "reportUnknownArgumentType": "none",
   "reportUnknownMemberType": "none",
   "reportUnknownParameterType": "none",
-  "reportUnknownVariableType": "none"
+  "reportUnknownVariableType": "none",
 }
