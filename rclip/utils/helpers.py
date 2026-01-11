@@ -1,18 +1,18 @@
 import argparse
 import os
 import pathlib
-import textwrap
-from typing import IO, cast
-from PIL import Image, UnidentifiedImageError
 import re
+import sys
+import textwrap
+from importlib.metadata import version
+from typing import IO, cast
+
 import numpy as np
 import rawpy
 import requests
-import sys
-from importlib.metadata import version
+from PIL import Image, UnidentifiedImageError
 
 from rclip.const import IMAGE_RAW_EXT, IS_LINUX, IS_MACOS, IS_WINDOWS
-
 
 MAX_DOWNLOAD_SIZE_BYTES = 50_000_000
 DOWNLOAD_TIMEOUT_SECONDS = 60
